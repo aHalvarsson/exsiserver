@@ -29,7 +29,8 @@ router.post('/', async function (req, res, next) {
 			{
 				
 				//const browser = await puppeteer.launch();
-				const browser = await puppeteer.launch({
+				const browser = await puppeteer.launch( {
+					executablePath: 'home/site/wwwroot/.cache/puppeteer/chrome/win64-121.0.6167.85/chrome-win64/chrome.exe',
 					ignoreDefaultArgs: ['--disable-extensions'],
 				});
 				logger.info({ message: 'Browser launched' });
