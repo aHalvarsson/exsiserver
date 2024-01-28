@@ -25,22 +25,11 @@ router.post('/', async function (req, res, next) {
 			const html = createPDFhtmlString(data);
 
 			logger.info({ message: 'Data request processed' });
-			try
-			{
+			try {
 				
 				//const browser = await puppeteer.launch();
-				const browser = await puppeteer.launch( {
-
-					headless: true,
-        args: [
-					`--disable-extensions`,
-					`--no-sandbox`,
-					`--disable-setuid-sandbox`,
-					`--disable-dev-shm-usage`,
-					`--disable-accelerated-2d-canvas`,
-					`--disable-gpu`,
-        ],
-					
+				const browser = await puppeteer.launch({
+					ignoreDefaultArgs: ['--disable-extensions'],
 				});
 				logger.info({ message: 'Browser launched' });
 				const page = await browser.newPage();
