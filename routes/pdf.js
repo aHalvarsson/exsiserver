@@ -20,7 +20,6 @@ router.post('/', async function (req, res, next) {
 			metadata: { data, clientInfo },
 		});
 
-
 		// Create the PDF
 		if (data) {
 			const html = createPDFhtmlString(data);
@@ -59,7 +58,7 @@ router.post('/', async function (req, res, next) {
 				message: 'No data provided',
 				metadata: { clientInfo },
 			});
-			//res.status( 400 ).send( 'No data provided' );
+			
 			res.send('No data provided');
 		}
 	} catch (error) {
