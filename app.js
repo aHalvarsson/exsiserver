@@ -28,7 +28,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // routes are here
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -49,7 +48,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;
