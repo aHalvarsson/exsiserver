@@ -20,18 +20,18 @@ router.post('/', async function (req, res, next) {
 			metadata: { data, clientInfo },
 		});
 
-
-
 		// Create the PDF
 		if (data) {
 			const html = createPDFhtmlString(data);
 
 			logger.info({ message: 'Data request processed' });
-			try {
+			try
+			{
+				
 				//const browser = await puppeteer.launch();
-        const browser = await puppeteer.launch({
-  ignoreDefaultArgs: ['--disable-extensions'],
-});
+				const browser = await puppeteer.launch({
+					ignoreDefaultArgs: ['--disable-extensions'],
+				});
 				logger.info({ message: 'Browser launched' });
 				const page = await browser.newPage();
 				logger.info({ message: 'Page created' });
