@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 
-// routes
+// routes are here
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pdf', pdfRouter);
