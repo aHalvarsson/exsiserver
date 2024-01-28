@@ -20,6 +20,7 @@ router.post('/', async function (req, res, next) {
 			metadata: { data, clientInfo },
 		});
 
+
 		// Create the PDF
 		if (data) {
 			const html = createPDFhtmlString(data);
@@ -43,7 +44,8 @@ router.post('/', async function (req, res, next) {
 				logger.info({ message: 'Browser closed' });
 			} catch (error) {
 				logger.error({ message: `Top try: ${error.message}`, metadata: error.stack });
-				console.log(error.message);
+				console.log( error.message );
+				
 				//res.status( 500 ).send( 'Top error: An error occurred while generating the PDF.' );
 			}
 			// Convert the PDF to a base64 string
