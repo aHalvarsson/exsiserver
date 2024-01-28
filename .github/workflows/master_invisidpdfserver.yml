@@ -53,4 +53,4 @@ jobs:
           app-name: 'invisidPdfServer'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_877AD6ECA763445FAFF0F08F2F52B29B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C185CE94D15148B5BB2B53EF2D963840 }}
