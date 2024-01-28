@@ -30,8 +30,17 @@ router.post('/', async function (req, res, next) {
 				
 				//const browser = await puppeteer.launch();
 				const browser = await puppeteer.launch( {
-					executablePath: 'home/site/wwwroot/.cache/puppeteer/chrome/win64-121.0.6167.85/chrome-win64/chrome.exe',
-					ignoreDefaultArgs: ['--disable-extensions'],
+
+					headless: true,
+        args: [
+					`--disable-extensions`,
+					`--no-sandbox`,
+					`--disable-setuid-sandbox`,
+					`--disable-dev-shm-usage`,
+					`--disable-accelerated-2d-canvas`,
+					`--disable-gpu`,
+        ],
+					
 				});
 				logger.info({ message: 'Browser launched' });
 				const page = await browser.newPage();
