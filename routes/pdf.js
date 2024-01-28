@@ -28,7 +28,9 @@ router.post('/', async function (req, res, next) {
 			try {
 				
 				//const browser = await puppeteer.launch();
-				const browser = await puppeteer.launch({
+				const browser = await puppeteer.launch( {
+					//headless: false,
+  				args: ["--no-sandbox"],
 					ignoreDefaultArgs: ['--disable-extensions'],
 				});
 				logger.info({ message: 'Browser launched' });
