@@ -15,38 +15,36 @@ router.post('/', async function (req, res, next) {
 			userAgent: req.headers['user-agent'],
 		};
 		const isMe = req.headers['is-it-me'] === 'true';
-		logger.info({
-			message: `${isMe ? 'Client is me' : 'Client is not me'} PDF request received`,
-			metadata: { data, clientInfo },
-		});
 
 		// Create the PDF
 		if (data) {
-			const html = createPDFhtmlString(data);
+			const { headTemplate, reportBody, footerTemplate } = createPDFhtmlString(data);
 
-			logger.info({ message: 'Data request processed' });
 			try {
-				
+				const options = {
+					format: 'A4',
+					displayHeaderFooter: true,
+					headerTemplate: headTemplate,
+					footerTemplate: footerTemplate,
+				};
+
 				//const browser = await puppeteer.launch();
-				const browser = await puppeteer.launch( {
-					//headless: false,
-  				args: ["--no-sandbox"],
+				const browser = await puppeteer.launch({
+					args: ['--no-sandbox'],
 					ignoreDefaultArgs: ['--disable-extensions'],
 				});
-				logger.info({ message: 'Browser launched' });
+
 				const page = await browser.newPage();
-				logger.info({ message: 'Page created' });
-				await page.setContent(html);
-				logger.info({ message: 'Page content set' });
-				pdf = await page.pdf({ format: 'A4' });
-				logger.info({ message: 'PDF created' });
+
+				await page.setContent(reportBody);
+
+				pdf = await page.pdf(options);
 
 				await browser.close();
-				logger.info({ message: 'Browser closed' });
 			} catch (error) {
 				logger.error({ message: `Top try: ${error.message}`, metadata: error.stack });
-				console.log( error.message );
-				
+				console.log(error.message);
+
 				//res.status( 500 ).send( 'Top error: An error occurred while generating the PDF.' );
 			}
 			// Convert the PDF to a base64 string
@@ -60,7 +58,7 @@ router.post('/', async function (req, res, next) {
 				message: 'No data provided',
 				metadata: { clientInfo },
 			});
-			
+
 			res.send('No data provided');
 		}
 	} catch (error) {
