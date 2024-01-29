@@ -9,6 +9,7 @@ router.post('/', async function (req, res, next) {
 		console.log('POST /pdf');
 		const data = req.body;
 		let pdf;
+		let browser;
 
 		const clientInfo = {
 			ip: req.ip,
@@ -29,7 +30,7 @@ router.post('/', async function (req, res, next) {
 				};
 
 				//const browser = await puppeteer.launch();
-				const browser = await puppeteer.launch({
+				browser = await puppeteer.launch({
 					args: ['--no-sandbox'],
 					ignoreDefaultArgs: ['--disable-extensions'],
 				});
