@@ -36,17 +36,22 @@ router.post('/', async function (req, res, next) {
 
 				const page = await browser.newPage();
 
-				await page.setContent(reportBody);
+				await page.setContent( reportBody );
+				await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
 				pdf = await page.pdf(options);
 
-				await browser.close();
+				
 			} catch (error) {
 				logger.error({ message: `Top try: ${error.message}`, metadata: error.stack });
 				console.log(error.message);
 
-				//res.status( 500 ).send( 'Top error: An error occurred while generating the PDF.' );
-			}
+
+			} finally {
+  if (browser) {
+    await browser.close();
+  }
+}
 			// Convert the PDF to a base64 string
 			const base64String = pdf.toString('base64');
 			logger.info({ message: 'PDF converted to base64 string' });
@@ -64,8 +69,8 @@ router.post('/', async function (req, res, next) {
 	} catch (error) {
 		if (!res.headersSent) {
 			console.log(error);
-			logger.error({ message: 'Bottom try: An error occurred while generating the PDF.', metadata: { error } });
-			res.status(500).send('Bottom error: An error occurred while generating the PDF.');
+			logger.error({ message: 'An error occurred while generating the PDF.', metadata: { error } });
+			res.status(500).send('An error occurred while generating the PDF.');
 		}
 	}
 });
