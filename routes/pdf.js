@@ -37,7 +37,7 @@ router.post('/', async function (req, res, next) {
 				const page = await browser.newPage();
 
 				await page.setContent( reportBody );
-				await page.waitForNavigation({ waitUntil: 'networkidle0' });
+				// await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
 				pdf = await page.pdf(options);
 
