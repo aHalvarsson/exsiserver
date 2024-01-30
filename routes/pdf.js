@@ -101,7 +101,6 @@ router.post('/', async function (req, res, next) {
 }
 			// Convert the PDF to a base64 string
 			const base64String = pdf.toString('base64');
-			logger.info({ message: 'PDF converted to base64 string' });
 
 			// Send the base64 string as a JSON object
 			res.send(base64String);
