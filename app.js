@@ -31,7 +31,8 @@ app.use((req, res, next) => {
 // routes are here
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/pdf', pdfRouter);
+app.use( '/pdf', pdfRouter );
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
