@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var jwt  = require( 'jsonwebtoken' );
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var pdfRouter = require('./routes/pdf');
+var pdfRouter = require( './routes/pdf' );
+var loginRouter = require( './routes/login' );
+var tokenRouter = require( './routes/token' );
 
 var app = express();
 
@@ -30,13 +32,14 @@ app.use((req, res, next) => {
 
 // routes are here
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use( '/pdf', pdfRouter );
+app.use( '/login', loginRouter );
+app.use( '/token', tokenRouter );
+app.use('/pdf', authenticateToken, pdfRouter);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next( createError( 404 ) );
 });
 
 // error handler
@@ -51,7 +54,21 @@ app.use(function(err, req, res, next) {
 });
 
 
+// Middleware to authenticate JWT tokens
+function authenticateToken ( req, res, next )
+{
+  const JWT_SECRET = process.env.SECRET;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (token == null) return res.sendStatus(401);
 
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
 
 
 module.exports = app;
