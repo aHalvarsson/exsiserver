@@ -57,11 +57,11 @@ app.use(function(err, req, res, next) {
 // Middleware to authenticate JWT tokens
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
-
+  console.log('authHeader: ', authHeader);
   if (authHeader) {
     const token = authHeader.split(' ')[1];
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+console.log('token: ', token);
+    jwt.verify(token, process.env.SECRET, (err, user) => {
       if (err) {
         return res.sendStatus(403);
       }

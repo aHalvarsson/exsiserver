@@ -8,12 +8,13 @@ router.post('/', async function (req, res, next) {
 	try {
 		console.log('POST /pdf');
 		const data = req.body;
-
+/*
 		const clientInfo = {
 			ip: req.ip,
 			userAgent: req.headers['user-agent'],
 		};
 		const isMe = req.headers['is-it-me'] === 'true';
+		*/
 		let pdfAsBase64;
 		
 		// Create the PDF
@@ -35,7 +36,6 @@ router.post('/', async function (req, res, next) {
 		} else {
 			logger.error({
 				message: 'No data provided',
-				metadata: { clientInfo },
 			});
 			if (!res.headersSent) res.status(500).send('No data provided');
 		}
