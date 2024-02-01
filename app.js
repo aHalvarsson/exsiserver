@@ -36,7 +36,7 @@ app.use( '/login', loginRouter );
 app.use( '/token', tokenRouter );
 app.use('/pdf', verifyToken, pdfRouter);
 app.get('/pdfs/:filename', (req, res) => {
-  res.sendFile(`./routes/tmp/${req.params.filename}`);
+  res.sendFile(path.join(__dirname, 'routes', 'tmp') + '/' + req.params.filename);
 });
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
