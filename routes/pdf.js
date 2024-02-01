@@ -3,25 +3,21 @@ const logger = require( '../lib/logger.js' );
 const createPDFBase = require( '../lib/createPDF.js' );
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
 router.post('/', async function (req, res, next) {
 	try {
 		console.log('POST /pdf');
 		const data = req.body;
-/*
-		const clientInfo = {
-			ip: req.ip,
-			userAgent: req.headers['user-agent'],
-		};
-		const isMe = req.headers['is-it-me'] === 'true';
-		*/
-		let pdfAsBase64;
+		const pdfFilename = `${data.fileInfo.fileId.split('.').slice(0, -1).join('')}.pdf`;		
 		
 		// Create the PDF
 		if (data) {
 			try
 			{
-				pdfAsBase64 = await createPDFBase( data );
+				const pdfAsBytes = await createPDFBase( data );
+				fs.writeFileSync(`/tmp/${pdfFilename}`, pdfAsBytes);
+
 			} catch ( error )
 			{
 				logger.error( {
@@ -31,7 +27,7 @@ router.post('/', async function (req, res, next) {
 				if (!res.headersSent) res.status(500).send('An error occurred while trying to get the PDF doc.');
 			}
 
-			res.send( pdfAsBase64 );
+			res.send(`${process.env.BASE_URL}/pdfs/${pdfFilename}`);
 
 		} else {
 			logger.error({

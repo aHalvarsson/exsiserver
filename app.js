@@ -35,6 +35,9 @@ app.use('/', indexRouter);
 app.use( '/login', loginRouter );
 app.use( '/token', tokenRouter );
 app.use('/pdf', verifyToken, pdfRouter);
+app.get('/pdfs/:filename', (req, res) => {
+  res.sendFile(`./routes/tmp/${req.params.filename}`);
+});
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // catch 404 and forward to error handler
