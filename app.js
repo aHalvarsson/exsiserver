@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use( '/login', loginRouter );
 app.use( '/token', tokenRouter );
-app.use('/pdf', authenticateToken, pdfRouter);
+app.use('/pdf', verifyToken, pdfRouter);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // catch 404 and forward to error handler
@@ -55,19 +55,23 @@ app.use(function(err, req, res, next) {
 
 
 // Middleware to authenticate JWT tokens
-function authenticateToken ( req, res, next )
-{
-  const JWT_SECRET = process.env.SECRET;
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  
-  if (token == null) return res.sendStatus(401);
+function verifyToken(req, res, next) {
+  const authHeader = req.headers.authorization;
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
 }
 
 
