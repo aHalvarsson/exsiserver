@@ -17,7 +17,7 @@ router.post('/', async function (req, res, next) {
 			try
 			{
 				const pdfAsBytes = await createPDFBase( data );
-				fs.writeFileSync(path.join(__dirname, 'routes', 'tmp', pdfFilename), pdfAsBytes);
+				fs.writeFileSync(path.join(__dirname, 'tmp', pdfFilename), pdfAsBytes);
 
 			} catch ( error )
 			{
