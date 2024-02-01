@@ -4,6 +4,7 @@ const createPDFBase = require( '../lib/createPDF.js' );
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var path = require('path');
 
 router.post('/', async function (req, res, next) {
 	try {
@@ -16,7 +17,7 @@ router.post('/', async function (req, res, next) {
 			try
 			{
 				const pdfAsBytes = await createPDFBase( data );
-				fs.writeFileSync(`/tmp/${pdfFilename}`, pdfAsBytes);
+				fs.writeFileSync(path.join(__dirname, 'routes', 'tmp', pdfFilename), pdfAsBytes);
 
 			} catch ( error )
 			{
