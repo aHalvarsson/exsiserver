@@ -13,7 +13,7 @@ router.post('/', async function (req, res, next) {
 		// Log the request information
 		logger.info({
 			message: 'POST /pdf called',
-			metadata: req.body,
+			metadata: req.body.fileInfo.fileId,
 			codeFile: 'pdf.js',
 		})
 		const data = req.body;
