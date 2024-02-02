@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var jwt  = require( 'jsonwebtoken' );
+var logging = require( './lib/logger.js' );
 
 var indexRouter = require('./routes/index');
 var pdfRouter = require( './routes/pdf' );
@@ -59,6 +60,7 @@ app.use(function(err, req, res, next) {
 
 // Middleware to authenticate JWT tokens
 function verifyToken(req, res, next) {
+  try {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(' ')[1];
@@ -73,6 +75,14 @@ function verifyToken(req, res, next) {
   } else {
     res.sendStatus(401);
   }
+} catch (error) {
+  logging.error({
+    message: 'verifyToken error',
+    metadata: error,
+    codeFile: 'app.js',
+  });
+  if (!res.headersSent) res.status(500).send('An error occurred while trying to verify token.');
+}
 }
 
 

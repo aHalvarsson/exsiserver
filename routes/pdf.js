@@ -8,7 +8,11 @@ var path = require('path');
 
 router.post('/', async function (req, res, next) {
 	try {
-		console.log('POST /pdf');
+		logger.info({
+			message: 'POST /pdf called',
+			metadata: req.body,
+			codeFile: 'pdf.js',
+		})
 		const data = req.body;
 		const pdfFilename = `${data.fileInfo.fileId.split('.').slice(0, -1).join('')}.pdf`;		
 		
@@ -32,7 +36,7 @@ router.post('/', async function (req, res, next) {
 				if (!res.headersSent) res.status(500).send('An error occurred while trying to get the PDF doc.');
 			}
 
-			await logger.sendLogArray();
+			
 			res.send(`${process.env.BASE_URL}/pdfs/${pdfFilename}`);
 
 		} else {
@@ -49,6 +53,8 @@ router.post('/', async function (req, res, next) {
 			codeFile: 'pdf.js'} );
 			res.status(500).send('An error occurred while trying to send.');
 		}
+	} finally {
+		await logger.sendLogArray();
 	}
 });
 
