@@ -32,6 +32,7 @@ router.post('/', async function (req, res, next) {
 				if (!res.headersSent) res.status(500).send('An error occurred while trying to get the PDF doc.');
 			}
 
+			await logger.sendLogArray();
 			res.send(`${process.env.BASE_URL}/pdfs/${pdfFilename}`);
 
 		} else {
