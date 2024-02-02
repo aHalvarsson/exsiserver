@@ -58,31 +58,36 @@ app.use(function(err, req, res, next) {
 });
 
 
-// Middleware to authenticate JWT tokens
+/**
+ * Middleware function to verify the access token in the request headers
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ */
 function verifyToken(req, res, next) {
   try {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.SECRET, (err, user) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.split(' ')[1];
+      jwt.verify(token, process.env.SECRET, (err, user) => {
+        if (err) {
+          return res.sendStatus(403); // Forbidden
+        }
 
-      req.user = user;
-      next();
+        req.user = user;
+        next();
+      });
+    } else {
+      res.sendStatus(401); // Unauthorized
+    }
+  } catch (error) {
+    logging.error({
+      message: 'verifyToken error',
+      metadata: error,
+      codeFile: 'app.js',
     });
-  } else {
-    res.sendStatus(401);
+    if (!res.headersSent) res.status(500).send('An error occurred while trying to verify token.');
   }
-} catch (error) {
-  logging.error({
-    message: 'verifyToken error',
-    metadata: error,
-    codeFile: 'app.js',
-  });
-  if (!res.headersSent) res.status(500).send('An error occurred while trying to verify token.');
-}
 }
 
 
