@@ -33,6 +33,8 @@ app.use((req, res, next) => {
 
 // routes are here
 app.use('/', indexRouter);
+app.get('/testServerOnline', (req, res) => {
+  res.send('Server is running');});
 app.use( '/login', loginRouter );
 app.use( '/token', tokenRouter );
 app.use('/pdf', verifyToken, pdfRouter);
