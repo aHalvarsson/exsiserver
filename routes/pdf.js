@@ -62,10 +62,10 @@ router.post('/', async function (req, res, next) {
 				codeFile: 'pdf.js'} );
 			res.status(500).send('An error occurred while trying to send.');
 		}
-	} finally {
+	} // finally {
 		// Send any pending logs
-		await logger.sendLogArray();
-	}
+		// await logger.sendLogArray();
+//	}
 });
 
 module.exports = router;
