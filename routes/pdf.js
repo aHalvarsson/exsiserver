@@ -20,9 +20,9 @@ router.post('/', async function (req, res, next) {
          // Add task to the queue
          queueManager.addTask(task);
 
-         if (queueManager.queue.length > 5) {
+         if (queueManager.triggered === false) {
             // Process the queue
-            queueManager.processNext();
+            queueManager.processAll();
          }
          // Send response
          res.status(200).send('Task added');
