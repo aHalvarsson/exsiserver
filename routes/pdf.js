@@ -1,5 +1,8 @@
 // Import required modules
-const { logger, helper, queueManager, workers } = require('../lib/modules');
+const logger = require('../lib/logger');
+const helper = require('../lib/helper');
+const queueManager = require('../lib/queueManager/queueManager');
+const workers = require('../lib/queueManager/queueWorkers');
 var express = require('express');
 var router = express.Router();
 
@@ -18,11 +21,11 @@ router.post('/', async function (req, res, next) {
          const task = await helper.createTask(data, 'pdfGen', workers);
 
          // Add task to the queue
-         queueManager.addTask(task);
+         await queueManager.addTask(task);
 
          if (queueManager.triggered === false) {
             // Process the queue
-            queueManager.processAll();
+            await queueManager.processAll();
          }
          // Send response
          res.status(200).send('Task added');
@@ -34,9 +37,6 @@ router.post('/', async function (req, res, next) {
          });
          if (!res.headersSent) res.status(500).send('No data provided');
       }
-
-      // Send any pending logs
-      if (queueManager.queue.length === 0) await logger.sendLogArray();
    } catch (error) {
       // Log and send error response for any unexpected errors
       if (!res.headersSent) {
