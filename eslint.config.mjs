@@ -5,44 +5,44 @@ import pkg from 'eslint-config-prettier';
 const { rules } = pkg;
 
 export default [
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      sourceType: 'commonjs',
-    },
-  },
-  {
-    languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
-    },
-  },
+   {
+      files: ['**/*.js'],
+      languageOptions: {
+         sourceType: 'commonjs',
+      },
+   },
+   {
+      languageOptions: {
+         globals: { ...globals.browser, ...globals.node },
+      },
+   },
 
-  pluginJs.configs.recommended,
+   pluginJs.configs.recommended,
 
-  eslintPluginPrettierRecommended,
+   eslintPluginPrettierRecommended,
 
-  {
-    rules: {
-      ...rules,
-      semi: 'error',
-      quotes: ['error', 'single'],
-      indent: [
-        'error',
-        2,
-        {
-          SwitchCase: 1,
-          VariableDeclarator: 'first',
-          ImportDeclaration: 'first',
-          ArrayExpression: 'first',
-          ObjectExpression: 'first',
-          CallExpression: { arguments: 'first' },
-          FunctionDeclaration: { body: 1, parameters: 4 },
-          FunctionExpression: { body: 1, parameters: 4 },
-        },
-      ],
-      'space-before-blocks': 'error',
-      'space-in-parens': 'error',
-      'space-infix-ops': 'error',
-    },
-  },
+   {
+      rules: {
+         ...rules,
+         semi: 'error',
+         quotes: ['error', 'single'],
+         indent: [
+            'error',
+            3,
+            {
+               SwitchCase: 1,
+               VariableDeclarator: 'first',
+               ImportDeclaration: 'first',
+               ArrayExpression: 'first',
+               ObjectExpression: 'first',
+               CallExpression: { arguments: 'first' },
+               FunctionDeclaration: { body: 1, parameters: 4 },
+               FunctionExpression: { body: 1, parameters: 4 },
+            },
+         ],
+         'space-before-blocks': 'error',
+         'space-in-parens': 'error',
+         'space-infix-ops': 'error',
+      },
+   },
 ];
