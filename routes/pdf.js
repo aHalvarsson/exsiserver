@@ -1,5 +1,5 @@
 // Import required modules
-const { logger, helper, queueManager } = require('../lib/modules.js');
+const { logger, helper, queueManager } = require('../lib/modules');
 var express = require('express');
 var router = express.Router();
 
