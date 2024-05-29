@@ -18,14 +18,14 @@ router.post('/', async function (req, res, next) {
       const data = req.body;
 
       if (data) {
-         const task = await helper.createTask(data, 'pdfGen', workers);
+         const task = helper.createTask(data, 'pdfGen', workers);
 
          // Add task to the queue
-         await queueManager.addTask(task);
+         queueManager.addTask(task);
 
          if (queueManager.triggered === false) {
             // Process the queue
-            await queueManager.processAll();
+            queueManager.processAll();
          }
          // Send response
          res.status(200).send('Task added');
