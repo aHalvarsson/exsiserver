@@ -25,7 +25,7 @@ router.post('/', async function (req, res, next) {
             queueManager.processAll();
          }
          // Send response
-         res.status(200).send('PDF generation started');
+         res.status(200).send('Task added');
       } else {
          // Log and send error response if no data provided
          logger.error({
