@@ -1,5 +1,5 @@
 // Import required modules
-const { logger, helper, queueManager } = require('../lib/modules');
+const { logger, helper, queueManager, workers } = require('../lib/modules');
 var express = require('express');
 var router = express.Router();
 
@@ -15,14 +15,14 @@ router.post('/', async function (req, res, next) {
       const data = req.body;
 
       if (data) {
-         const task = helper.createTask('pdfGen', data);
+         const task = await helper.createTask(data, 'pdfGen', workers);
 
          // Add task to the queue
          queueManager.addTask(task);
 
          if (queueManager.queue.length > 5) {
             // Process the queue
-            queueManager.processAll();
+            queueManager.processNext();
          }
          // Send response
          res.status(200).send('Task added');
